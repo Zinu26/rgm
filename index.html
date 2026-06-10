@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Secret Garden</title>
+
 <style>
   * { box-sizing:border-box; margin:0; padding:0; }
   html,body { height:100%; overflow:hidden; font-family:"Segoe UI",system-ui,sans-serif; }
@@ -12,470 +13,329 @@
   .garden { position:fixed; inset:0; transition:opacity 1s;
     background:
       radial-gradient(circle at 80% 16%, #fff7c2 0 5%, #fff7c233 6%, transparent 9%),
-      linear-gradient(#9bdcff 0%, #cdeffb 36%, #bde6a0 50%, #5aa83c 62%, #3c7d2a 100%); }
-  .ground { position:fixed; left:0; right:0; bottom:0; height:34vh; z-index:1;
-    display:flex; align-items:flex-end; justify-content:space-around; padding:0 4vw; }
+      linear-gradient(#9bdcff 0%, #cdeffb 36%, #bde6a0 50%, #5aa83c 62%, #3c7d2a 100%);
+  }
 
-  /* ---------- realistic CSS flower (5 shaded petals + center) ---------- */
-  .flower { width:1em; height:1em; border-radius:50%; position:relative; display:inline-block;
+  .ground {
+    position:fixed; left:0; right:0; bottom:0; height:34vh;
+    display:flex; align-items:flex-end; justify-content:space-around;
+    padding:0 4vw;
+  }
+
+  /* ---------- flower ---------- */
+  .flower {
+    width:1em; height:1em; border-radius:50%; position:relative;
     background:
       radial-gradient(circle at 50% 26%, var(--pl) 0 6%, var(--p) 7% 17%, transparent 18%),
       radial-gradient(circle at 73% 43%, var(--pl) 0 6%, var(--p) 7% 17%, transparent 18%),
       radial-gradient(circle at 64% 69%, var(--pl) 0 6%, var(--p) 7% 17%, transparent 18%),
       radial-gradient(circle at 36% 69%, var(--pl) 0 6%, var(--p) 7% 17%, transparent 18%),
       radial-gradient(circle at 27% 43%, var(--pl) 0 6%, var(--p) 7% 17%, transparent 18%),
-      radial-gradient(circle at 50% 50%, #ffe08a 0 9%, #f3ad33 10% 15%, transparent 16%); }
-  /* a plant on the ground = stem + leaves + flower */
-  .plant { position:relative; display:flex; flex-direction:column; align-items:center;
-    animation:sway 4s ease-in-out infinite; transform-origin:bottom center; }
-  .plant .flower { font-size:clamp(34px,7vw,64px); z-index:2; }
-  .plant .stem { width:8px; height:18vh; background:linear-gradient(#5cae3e,#2f6b22); border-radius:6px; margin-top:-6px; }
-  .plant .stem::before,.plant .stem::after { content:""; position:absolute; top:34%; width:30px; height:16px;
-    background:#3f8a2c; border-radius:0 100% 0 100%; }
-  .plant .stem::before { left:-26px; transform:rotate(-18deg); }
-  .plant .stem::after  { right:-26px; transform:rotate(18deg) scaleX(-1); }
+      radial-gradient(circle at 50% 50%, #ffe08a 0 9%, #f3ad33 10% 15%, transparent 16%);
+  }
 
-  /* ---------- realistic CSS butterfly ---------- */
-  .bfly { position:fixed; width:60px; height:54px; z-index:4; perspective:240px; will-change:transform; }
-  .bfly .body { position:absolute; left:50%; top:8px; width:5px; height:36px; transform:translateX(-50%);
-    background:linear-gradient(#2c1d0e,#000); border-radius:3px; z-index:3; }
-  .bfly .body::before { content:""; position:absolute; top:-6px; left:50%; transform:translateX(-50%);
-    width:9px; height:9px; border-radius:50%; background:#2c1d0e; }
-  .bfly .wing { position:absolute; top:6px; width:27px; height:30px; border:2px solid #3a1d05;
-    background:
-      radial-gradient(circle at 50% 82%, #fff 0 7%, transparent 8%),
-      radial-gradient(circle at 38% 30%, #ffd680 0 14%, #ff962f 42%, #df5a0f 78%, #5e2a05 100%);
-    box-shadow:0 0 0 1px #00000022; }
-  .bfly .wing::after { content:""; position:absolute; left:2px; bottom:-15px; width:21px; height:20px;
-    border:2px solid #3a1d05; background:radial-gradient(circle at 45% 35%, #ffb347, #e0560f 75%, #5e2a05);
-    border-radius:60% 40% 60% 50%; }
-  .bfly .wing.l { right:50%; margin-right:1px; transform-origin:right center; border-radius:70% 40% 30% 60%;
-    animation:flapL .22s ease-in-out infinite; }
-  .bfly .wing.r { left:50%;  margin-left:1px;  transform-origin:left center;  border-radius:40% 70% 60% 30%;
-    animation:flapR .22s ease-in-out infinite; }
-  .bfly .wing.l::after { left:auto; right:2px; border-radius:40% 60% 50% 60%; }
+  .plant {
+    display:flex; flex-direction:column; align-items:center;
+    animation:sway 4s ease-in-out infinite;
+  }
 
-  /* ---------- number pad ---------- */
-  .gate { position:fixed; inset:0; z-index:2; display:flex; align-items:center; justify-content:center;
-    opacity:0; transition:opacity 1s ease 1s; }
+  .stem {
+    width:8px; height:18vh;
+    background:linear-gradient(#5cae3e,#2f6b22);
+    border-radius:6px;
+  }
+
+  @keyframes sway {
+    0%,100%{transform:rotate(-6deg);}
+    50%{transform:rotate(6deg);}
+  }
+
+  /* ---------- butterflies ---------- */
+  .bfly {
+    position:fixed; width:60px; height:54px;
+    animation:fly linear infinite;
+  }
+
+  @keyframes fly {
+    0% { transform:translate(-10vw,70vh); }
+    50% { transform:translate(60vw,30vh); }
+    100% { transform:translate(110vw,60vh); }
+  }
+
+  /* ---------- gate ---------- */
+  .gate {
+    position:fixed; inset:0; display:flex;
+    justify-content:center; align-items:center;
+    opacity:0; transition:.8s;
+  }
+
   body.open .gate { opacity:1; }
-  body.unlocked .gate,.unlocked .garden,.unlocked .ground { opacity:0; pointer-events:none; }
-  .pad { background:rgba(255,255,255,.84); backdrop-filter:blur(6px); border-radius:24px; padding:26px;
-    width:300px; box-shadow:0 18px 50px rgba(0,60,20,.35); text-align:center; }
-  .pad h1 { font-size:19px; color:#2f6b2a; margin-bottom:4px; }
-  .pad p  { font-size:13px; color:#5f7d57; margin-bottom:16px; }
-  .dots { display:flex; gap:14px; justify-content:center; margin-bottom:18px; }
-  .dots i { width:16px; height:16px; border-radius:50%; border:2px solid #6aa05f; transition:.2s; }
-  .dots i.on { background:#e85d9e; border-color:#e85d9e; transform:scale(1.1); }
-  .keys { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .keys button { font-size:20px; padding:14px 0; border:none; border-radius:14px; cursor:pointer;
-    background:#fff; color:#34602f; box-shadow:0 3px 0 #cfe3c6; }
-  .keys button:active { transform:translateY(2px); box-shadow:0 1px 0 #cfe3c6; }
-  .keys .alt { background:#ffe3ef; color:#c43d7d; }
-  .pad.bad { animation:shake .4s; } .pad.good { animation:pop .5s; }
-  .msg { margin-top:14px; font-size:15px; min-height:20px; color:#2f6b2a; font-weight:600; }
 
-  /* ---------- flower curtain ---------- */
-  .curtain { position:fixed; top:0; bottom:0; width:50.5%; overflow:hidden; z-index:20;
-    background:linear-gradient(135deg,#ffd1e8,#ffe9b0); transition:transform 1.7s cubic-bezier(.7,0,.3,1); }
-  .curtain.left { left:0; } .curtain.right { right:0; }
-  body.open .curtain.left  { transform:translateX(-100%); }
-  body.open .curtain.right { transform:translateX(100%); }
-  .curtain .flower { position:absolute; animation:sway 4s ease-in-out infinite; }
+  body.unlocked .garden,
+  body.unlocked .ground {
+    opacity:0; pointer-events:none;
+  }
 
-  /* ---------- reveal screen ---------- */
-  .scene { position:fixed; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center;
-    justify-content:center; gap:30px; padding:20px; opacity:0; pointer-events:none; transition:opacity 1.2s ease;
-    background:linear-gradient(#ffd9a8,#ffb7c5 58%,#caa7e8); }
   body.unlocked .scene { opacity:1; pointer-events:auto; }
-  .scene h2 { color:#7a3b5d; font-size:clamp(20px,4vw,30px); text-shadow:0 1px 0 #fff6; text-align:center; }
-  .gifts { display:flex; gap:26px; flex-wrap:wrap; justify-content:center; }
-  .gift { width:170px; height:200px; background:rgba(255,255,255,.72); border:none; border-radius:20px;
-    cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
-    box-shadow:0 12px 30px rgba(120,40,80,.25); transition:transform .15s; }
-  .gift:hover { transform:translateY(-6px) scale(1.03); }
-  .gift span { font-weight:700; color:#7a3b5d; }
-  .gift .ico { height:74px; display:flex; align-items:center; justify-content:center; }
 
-  /* mini icons */
-  .mini-env { width:70px; height:48px; background:linear-gradient(#e0a0bd,#d98aa8); border-radius:6px; position:relative; }
-  .mini-env::after { content:""; position:absolute; inset:0; clip-path:polygon(0 0,50% 58%,100% 0);
-    background:#e8b4c8; border-radius:6px; }
+  .pad {
+    background:#fff; padding:24px;
+    border-radius:20px; width:300px;
+    text-align:center;
+  }
 
-  /* ---------- modals ---------- */
-  .modal { position:fixed; inset:0; z-index:50; display:none; flex-direction:column; align-items:center;
-    justify-content:center; gap:18px; background:rgba(40,15,35,.6); backdrop-filter:blur(4px); }
+  .keys {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:8px; margin-top:10px;
+  }
+
+  .keys button {
+    padding:14px; font-size:18px;
+  }
+
+  .msg { margin-top:10px; color:#2f6b2a; }
+
+  /* ---------- scene menu ---------- */
+  .scene {
+    position:fixed; inset:0;
+    display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    gap:20px;
+    opacity:0;
+    transition:.8s;
+    background:linear-gradient(#ffd9a8,#ffb7c5);
+  }
+
+  .gifts {
+    display:flex; gap:20px;
+  }
+
+  .gift {
+    padding:20px; background:#fff;
+    border-radius:15px; cursor:pointer;
+  }
+
+  /* ---------- modal ---------- */
+  .modal {
+    position:fixed; inset:0;
+    display:none;
+    background:rgba(0,0,0,.7);
+    justify-content:center;
+    align-items:center;
+  }
+
   .modal.show { display:flex; }
-  .x { position:absolute; top:20px; right:24px; width:44px; height:44px; border-radius:50%; border:none;
-    cursor:pointer; font-size:20px; background:rgba(255,255,255,.85); color:#7a3b5d; }
 
-  /* envelope / letter */
-  .envelope { position:relative; width:340px; height:230px; perspective:900px; }
-  .envelope::before { content:""; position:absolute; inset:0; background:#c9789a; border-radius:10px; }
-  .envelope .paper { position:absolute; left:6%; top:8%; width:88%; height:84%; background:#fff8ee;
-    border-radius:8px; padding:20px; color:#6a513a; font-family:Georgia,serif; font-size:14px; line-height:1.55;
-    box-shadow:0 10px 24px rgba(0,0,0,.25); transform:translateY(0) scale(.92); transition:transform 1s ease .7s; z-index:1; }
-  .envelope .pocket { position:absolute; inset:0; background:linear-gradient(#e0a0bd,#d98aa8); border-radius:10px;
-    z-index:2; clip-path:polygon(0 42%,50% 100%,100% 42%,100% 100%,0 100%); }
-  .envelope .flap { position:absolute; left:0; top:0; width:100%; height:52%; background:#e8b4c8;
-    border-radius:10px 10px 0 0; clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:top;
-    transition:transform .8s ease; z-index:4; }
-  .envelope.open .flap  { transform:rotateX(178deg); z-index:0; }
-  .envelope.open .paper { transform:translateY(-80%) scale(1.08); z-index:6; }
+  /* ---------- envelope ---------- */
+  .envelope {
+    width:300px; height:200px;
+    background:#e8a4c4;
+    padding:20px;
+    cursor:pointer;
+  }
 
-  /* carnation */
-  .bloom-wrap { display:flex; flex-direction:column; align-items:center; }
-  .carnation { width:200px; height:200px; border-radius:50%; position:relative;
-    background:
-      repeating-conic-gradient(from 0deg, #ff4f97 0 7deg, #ff7ab0 7deg 14deg),
-      radial-gradient(circle, #ff2e86 0 22%, transparent 23%);
-    box-shadow:inset 0 0 40px rgba(180,0,80,.5); animation:bloom .9s cubic-bezier(.2,1.3,.4,1) both; }
-  .carnation::before { content:""; position:absolute; inset:14%; border-radius:50%;
-    background:repeating-conic-gradient(from 8deg,#ff6aa6 0 6deg,#ffa7cd 6deg 12deg);
-    box-shadow:inset 0 0 26px rgba(190,0,90,.45); }
-  .carnation::after { content:""; position:absolute; inset:34%; border-radius:50%;
-    background:radial-gradient(circle,#ff84b8,#ff4f97); }
-  .stem2 { width:10px; height:120px; margin-top:-4px; background:linear-gradient(#4e9e3a,#2f6b22);
-    border-radius:6px; position:relative; }
-  .stem2::before { content:""; position:absolute; top:34px; left:-26px; width:36px; height:18px;
-    background:#3f8a2c; border-radius:0 100% 0 100%; transform:rotate(-20deg); }
-  .love { margin-top:18px; font-family:Georgia,serif; font-size:clamp(20px,5vw,28px); color:#fff;
-    text-shadow:0 2px 8px rgba(150,0,70,.6); text-align:center; animation:fadeUp 1s ease .5s both; }
+  .paper {
+    background:#fff;
+    padding:10px;
+    margin-top:10px;
+    display:none;
+  }
 
-  /* road trip */
-  .road-scene { position:relative; width:min(92vw,640px); height:360px; border-radius:18px; overflow:hidden;
-    box-shadow:0 20px 50px rgba(0,0,0,.4);
-    background:linear-gradient(#ffd29b 0%,#ffb27a 36%,#9bd17a 52%,#6fb24e 68%); }
-  .sun2 { position:absolute; top:34px; left:50%; transform:translateX(-50%); width:72px; height:72px;
-    border-radius:50%; background:radial-gradient(#fff3b0,#ffd34d); box-shadow:0 0 40px #ffd34d99; }
-  .cloud { position:absolute; top:46px; width:80px; height:24px; background:#fff; border-radius:20px;
-    opacity:.92; animation:drift 11s linear infinite; }
-  .cloud::before,.cloud::after { content:""; position:absolute; background:#fff; border-radius:50%; }
-  .cloud::before { width:34px; height:34px; top:-15px; left:12px; }
-  .cloud::after  { width:26px; height:26px; top:-9px;  left:42px; }
-  .hills { position:absolute; bottom:120px; left:0; width:100%; height:120px;
-    background:
-      radial-gradient(circle at 12% 150%, #6fb24e 0 78px, transparent 80px),
-      radial-gradient(circle at 50% 150%, #79c057 0 96px, transparent 98px),
-      radial-gradient(circle at 86% 150%, #6fb24e 0 84px, transparent 86px);
-    background-repeat:repeat-x; background-size:340px 120px; animation:scroll 7s linear infinite; }
-  .road { position:absolute; bottom:0; left:0; width:100%; height:120px; background:#3a3a44; }
-  .road .line { position:absolute; top:50%; left:0; width:100%; height:8px; transform:translateY(-50%);
-    background:repeating-linear-gradient(90deg,#ffd34d 0 40px,transparent 40px 80px); animation:dash .4s linear infinite; }
+  .envelope.open .paper { display:block; }
 
-  /* roadside building (slides in at each stop) */
-  .building { position:absolute; bottom:96px; left:50%; width:188px; height:150px; z-index:1;
-    transform:translateX(150%); transition:transform 1.1s ease; }
-  .building.here { transform:translateX(2%); }
-  .building .wall { position:absolute; bottom:0; width:100%; height:110px; border-radius:6px;
-    background:linear-gradient(#f4d9b0,#e6c094); }
-  .building .roof { position:absolute; top:0; left:-6px; width:calc(100% + 12px); height:40px;
-    background:#9c4a3b; border-radius:8px 8px 0 0; }
-  .building .door { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:46px; height:64px;
-    background:#7a4a2b; border-radius:6px 6px 0 0; }
-  .building .sign { position:absolute; top:26px; left:50%; transform:translateX(-50%); white-space:nowrap;
-    background:#fff; color:#7a3b5d; padding:6px 12px; border-radius:8px; font-weight:700; font-size:13px;
-    box-shadow:0 4px 10px #0003; }
+  /* ---------- flower ---------- */
+  .bouquet { font-size:60px; cursor:pointer; }
 
-  /* motorcycle */
-  .moto { position:absolute; bottom:90px; left:50%; width:190px; height:108px; z-index:3;
-    transform:translateX(-50%); animation:bob 1s ease-in-out infinite; }
-  .moto .wheel { position:absolute; bottom:0; width:58px; height:58px; border-radius:50%;
-    background:#1c1c22; border:7px solid #3a3a44; animation:spin .5s linear infinite; }
-  .moto .wheel.b { left:4px; } .moto .wheel.f { right:4px; }
-  .moto .wheel::after { content:""; position:absolute; inset:7px; border-radius:50%;
-    background:repeating-conic-gradient(#888 0 10deg,#ccc 10deg 20deg); }
-  .moto .wheel::before { content:""; position:absolute; inset:21px; border-radius:50%; background:#777; z-index:2; }
-  .moto .frame { position:absolute; bottom:26px; left:30px; width:130px; height:14px; background:#b8264c;
-    border-radius:8px; transform:skewX(-8deg); }
-  .moto .tank { position:absolute; bottom:34px; left:74px; width:46px; height:24px; border-radius:12px 14px 6px 6px;
-    background:linear-gradient(#ff5c83,#e6486a); }
-  .moto .seat { position:absolute; bottom:40px; left:46px; width:42px; height:14px; background:#222; border-radius:8px 4px 4px 8px; }
-  .moto .bar { position:absolute; bottom:42px; right:32px; width:8px; height:34px; background:#333; border-radius:4px; transform:rotate(12deg); }
-  .moto .bar::after { content:""; position:absolute; top:-4px; left:-12px; width:26px; height:8px; background:#333; border-radius:4px; transform:rotate(-12deg); }
-  .moto .head { position:absolute; bottom:30px; right:16px; width:14px; height:14px; border-radius:50%;
-    background:radial-gradient(#fffbe0,#ffd34d); box-shadow:0 0 12px #ffe9a0; }
-  .moto .rider { position:absolute; bottom:48px; left:72px; width:34px; height:46px; transform:skewX(-6deg);
-    background:#3a6ea5; border-radius:16px 16px 8px 8px; }
-  .moto .rider::before { content:""; position:absolute; top:-26px; left:4px; width:26px; height:28px; border-radius:50%;
-    background:linear-gradient(#3a3a44 58%,#9bd1ff 58% 76%,#3a3a44 76%); }  /* helmet + visor */
+  /* ---------- roadtrip ---------- */
+  .road {
+    width:90vw; height:300px;
+    background:#222;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
 
-  /* drive/stop control */
-  .road-scene .line, .road-scene .hills, .road-scene .moto, .road-scene .moto .wheel { animation-play-state:paused; }
-  .road-scene.driving .line, .road-scene.driving .hills,
-  .road-scene.driving .moto, .road-scene.driving .moto .wheel { animation-play-state:running; }
+  .moto {
+    position:absolute;
+    bottom:40px;
+    left:0;
+    transition:2s;
+  }
 
-  /* photo popup (set of pictures at each stop) */
-  .photos { position:absolute; inset:0; z-index:10; display:none; flex-wrap:wrap; gap:16px;
-    align-items:center; justify-content:center; padding:20px; background:rgba(25,10,30,.72); }
-  .photos.show { display:flex; }
-  .polaroid { background:#fff; padding:8px 8px 28px; border-radius:4px; box-shadow:0 10px 26px #0007;
-    transform:rotate(var(--r)); animation:popIn .45s ease both; position:relative; }
-  .polaroid .pic { width:150px; height:115px; border-radius:2px; background:var(--g); }
-  .polaroid .cap2 { position:absolute; left:0; right:0; bottom:7px; text-align:center; font:13px Georgia,serif; color:#5a4632; }
-  .photos .go { flex-basis:100%; text-align:center; }
-  .photos .go button { border:none; cursor:pointer; padding:10px 20px; border-radius:20px; font-size:15px;
-    background:#fff; color:#7a3b5d; font-weight:700; }
+  .popup {
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    color:#fff;
+  }
 
-  .cap { font-family:Georgia,serif; font-size:clamp(16px,4vw,22px); color:#fff; text-align:center;
-    text-shadow:0 2px 8px rgba(0,0,0,.5); }
-  /* mini motorcycle icon for the gift card */
-  .moto-mini { width:64px; height:26px; background:#e6486a; border-radius:8px; position:relative; }
-  .moto-mini::before, .moto-mini::after { content:""; position:absolute; bottom:-11px; width:24px; height:24px;
-    border-radius:50%; background:#222; border:5px solid #555; }
-  .moto-mini::before { left:0; } .moto-mini::after { right:0; }
-
-  /* ---------- keyframes ---------- */
-  @keyframes sway   { 0%,100%{transform:rotate(-7deg);} 50%{transform:rotate(7deg);} }
-  @keyframes flapL  { 0%,100%{transform:rotateY(12deg);} 50%{transform:rotateY(72deg);} }
-  @keyframes flapR  { 0%,100%{transform:rotateY(-12deg);} 50%{transform:rotateY(-72deg);} }
-  @keyframes shake  { 0%,100%{transform:translateX(0);} 20%,60%{transform:translateX(-10px);} 40%,80%{transform:translateX(10px);} }
-  @keyframes pop    { 0%{transform:scale(1);} 50%{transform:scale(1.06);} 100%{transform:scale(1);} }
-  @keyframes bloom  { 0%{transform:scale(0) rotate(-50deg);opacity:0;} 70%{transform:scale(1.12) rotate(8deg);} 100%{transform:scale(1) rotate(0);opacity:1;} }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:none;} }
-  @keyframes popIn  { from{opacity:0;transform:scale(.6) rotate(var(--r));} to{opacity:1;transform:scale(1) rotate(var(--r));} }
-  @keyframes drift  { from{transform:translateX(-120px);} to{transform:translateX(720px);} }
-  @keyframes scroll { from{background-position:0 0;} to{background-position:-340px 0;} }
-  @keyframes dash   { from{background-position:0 0;} to{background-position:-80px 0;} }
-  @keyframes spin   { to{transform:rotate(360deg);} }
-  @keyframes bob    { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-4px);} }
-  @keyframes fly1 { 0%{transform:translate(-12vw,72vh) rotate(-6deg);} 50%{transform:translate(50vw,38vh) rotate(8deg);} 100%{transform:translate(112vw,58vh) rotate(-6deg);} }
-  @keyframes fly2 { 0%{transform:translate(112vw,20vh) rotate(8deg);} 50%{transform:translate(45vw,62vh) rotate(-10deg);} 100%{transform:translate(-12vw,30vh) rotate(8deg);} }
-  @keyframes fly3 { 0%{transform:translate(-12vw,38vh);} 50%{transform:translate(60vw,16vh);} 100%{transform:translate(112vw,46vh);} }
+  .popup.show { display:flex; }
 </style>
 </head>
+
 <body>
-  <div class="garden"></div>
-  <div class="ground" id="ground"></div>
 
-  <!-- number pad -->
-  <div class="gate">
-    <div class="pad" id="pad">
-      <h1>🌸 Secret Garden 🌸</h1>
-      <p>Enter the passcode to come in</p>
-      <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
-      <div class="keys" id="keys">
-        <button>1</button><button>2</button><button>3</button>
-        <button>4</button><button>5</button><button>6</button>
-        <button>7</button><button>8</button><button>9</button>
-        <button class="alt" data-act="clear">⌫</button>
-        <button>0</button>
-        <button class="alt" data-act="enter">✓</button>
-      </div>
-      <div class="msg" id="msg"></div>
+<div class="garden"></div>
+<div class="ground" id="ground"></div>
+
+<!-- GATE -->
+<div class="gate">
+  <div class="pad">
+    <h3>Enter Code</h3>
+    <div id="display"></div>
+
+    <div class="keys" id="keys">
+      <button>1</button><button>2</button><button>3</button>
+      <button>4</button><button>5</button><button>6</button>
+      <button>7</button><button>8</button><button>9</button>
+      <button data-act="clear">C</button>
+      <button>0</button>
+      <button data-act="enter">OK</button>
+    </div>
+
+    <div class="msg" id="msg"></div>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="scene">
+  <h2>Choose One 💗</h2>
+  <div class="gifts">
+    <div class="gift" onclick="openLetter()">Letter</div>
+    <div class="gift" onclick="openFlower()">Flower</div>
+    <div class="gift" onclick="openRoad()">Roadtrip</div>
+  </div>
+</div>
+
+<!-- LETTER -->
+<div class="modal" id="letter">
+  <div class="envelope" onclick="this.classList.toggle('open')">
+    💌 Click to open
+    <div class="paper">
+      My love ❤️<br><br>
+      Thank you for everything.<br>
+      You are my favorite place.
     </div>
   </div>
+</div>
 
-  <!-- reveal screen -->
-  <div class="scene">
-    <h2>Three little surprises for you 💗</h2>
-    <div class="gifts">
-      <button class="gift" data-modal="letter">
-        <div class="ico"><div class="mini-env"></div></div><span>A Letter</span>
-      </button>
-      <button class="gift" data-modal="flower">
-        <div class="ico"><span class="flower" style="font-size:70px;--p:#ff5fa2;--pl:#ffc2dd"></span></div><span>A Flower</span>
-      </button>
-      <button class="gift" data-modal="road">
-        <div class="ico"><div class="moto-mini"></div></div>
-        <span>A Road Trip</span>
-      </button>
+<!-- FLOWER -->
+<div class="modal" id="flower">
+  <div class="bouquet" onclick="alert('You are my flower 🌸')">
+    🌸🌸🌸🌸🌸
+  </div>
+</div>
+
+<!-- ROAD -->
+<div class="modal" id="road">
+  <div class="road">
+    <div class="moto" id="moto">🏍️</div>
+
+    <div class="popup" id="popup">
+      <h2 id="stopTitle"></h2>
+      <p id="stopText"></p>
+      <button onclick="nextStop()">Next</button>
     </div>
   </div>
-
-  <!-- modals -->
-  <div class="modal" id="m-letter">
-    <button class="x" data-close>✕</button>
-    <div class="envelope" id="env">
-      <div class="paper">My dearest,<br><br>
-        Happy third month of being <i>us</i>. Every day with you feels like wandering
-        through a garden that never stops blooming. Thank you for your laughter,
-        your patience, and your love.<br><br>
-        Here's to many more months, adventures, and flowers.<br><br>
-        Forever yours ❤️</div>
-      <div class="pocket"></div>
-      <div class="flap"></div>
-    </div>
-  </div>
-
-  <div class="modal" id="m-flower">
-    <button class="x" data-close>✕</button>
-    <div class="bloom-wrap">
-      <div class="carnation"></div>
-      <div class="stem2"></div>
-      <p class="love">Happy 3rd months of love 💗</p>
-    </div>
-  </div>
-
-  <div class="modal" id="m-road">
-    <button class="x" data-close>✕</button>
-    <div class="road-scene" id="roadScene">
-      <div class="sun2"></div>
-      <div class="cloud" style="left:-120px"></div>
-      <div class="cloud" style="top:90px;animation-delay:-5s"></div>
-      <div class="hills"></div>
-      <div class="building" id="building">
-        <div class="roof"></div><div class="wall"></div><div class="door"></div>
-        <div class="sign" id="sign"></div>
-      </div>
-      <div class="road"><div class="line"></div></div>
-      <div class="moto">
-        <div class="wheel b"></div><div class="wheel f"></div>
-        <div class="frame"></div><div class="tank"></div><div class="seat"></div>
-        <div class="bar"></div><div class="head"></div><div class="rider"></div>
-      </div>
-      <div class="photos" id="photos"></div>
-    </div>
-    <p class="cap" id="roadCap">Hop on — our little road trip begins 🛵💨</p>
-  </div>
-
-  <!-- curtains -->
-  <div class="curtain left"  id="left"></div>
-  <div class="curtain right" id="right"></div>
+</div>
 
 <script>
-  const PIN = "0321";
-  const REVEAL_AFTER = 4000;                 // ms before the curtain splits
-  const PALETTE = [["#ff5fa2","#ffc2dd"],["#ff6b6b","#ffc6c6"],["#b06bff","#e3ccff"],
-                   ["#ff9f1c","#ffe0a3"],["#ffffff","#ffffff"],["#ff3b7f","#ffb3cf"]];
-  const FLIES = ["fly1","fly2","fly3"];
-  const rand = (a,b) => a + Math.random()*(b-a);
-  const pick = a => a[Math.floor(Math.random()*a.length)];
+let code = "";
+const correct = "0321";
 
-  // scatter realistic CSS flowers across both curtain halves
-  function fillCurtain(el){
-    for(let i=0;i<36;i++){
-      const f = document.createElement("span");
-      const c = pick(PALETTE);
-      f.className = "flower";
-      f.style.cssText = `left:${rand(-4,94)}%;top:${rand(-4,94)}%;font-size:${rand(26,62)}px;`+
-                        `--p:${c[0]};--pl:${c[1]};animation-delay:${rand(0,4)}s`;
-      el.appendChild(f);
-    }
+/* garden flowers */
+for(let i=0;i<10;i++){
+  let p=document.createElement("div");
+  p.className="plant";
+  p.innerHTML=`🌸<div class="stem"></div>`;
+  ground.appendChild(p);
+}
+
+/* butterflies */
+for(let i=0;i<3;i++){
+  let b=document.createElement("div");
+  b.className="bfly";
+  b.style.animationDuration = (10+i*2)+"s";
+  document.body.appendChild(b);
+}
+
+/* open gate */
+setTimeout(()=>document.body.classList.add("open"),3000);
+
+/* keypad */
+keys.onclick = e=>{
+  let b=e.target;
+  if(!b.tagName) return;
+
+  if(b.dataset.act==="clear"){
+    code="";
   }
-  fillCurtain(left); fillCurtain(right);
-
-  // ground plants
-  for(let i=0;i<7;i++){
-    const c = pick(PALETTE);
-    const p = document.createElement("div");
-    p.className = "plant"; p.style.animationDelay = rand(0,3)+"s";
-    p.innerHTML = `<span class="flower" style="--p:${c[0]};--pl:${c[1]}"></span><div class="stem"></div>`;
-    ground.appendChild(p);
+  else if(b.dataset.act==="enter"){
+    check();
   }
-
-  // realistic butterflies
-  for(let i=0;i<6;i++){
-    const b = document.createElement("div");
-    b.className = "bfly";
-    b.style.animation = `${FLIES[i%3]} ${rand(11,18)}s linear ${rand(0,8)}s infinite`;
-    b.style.transform = `scale(${rand(.7,1.2)})`;
-    b.innerHTML = `<div class="wing l"></div><div class="wing r"></div><div class="body"></div>`;
-    document.body.appendChild(b);
+  else{
+    code += b.textContent;
   }
+  display.textContent = code;
+}
 
-  // reveal curtain after delay
-  setTimeout(() => document.body.classList.add("open"), REVEAL_AFTER);
-
-  // number pad
-  let entry = "";
-  const dots = [...document.querySelectorAll("#dots i")];
-  const draw = () => dots.forEach((d,i)=>d.classList.toggle("on", i<entry.length));
-
-  function check(){
-    if(entry === PIN){
-      pad.classList.add("good");
-      msg.textContent = "🌷 Welcome to the garden! 🌷";
-      keys.style.pointerEvents = "none";
-      setTimeout(() => document.body.classList.add("unlocked"), 1200);
-    } else {
-      pad.classList.add("bad");
-      msg.textContent = "Wrong passcode — try again";
-      setTimeout(()=>pad.classList.remove("bad"), 400);
-      entry = ""; draw();
-    }
+function check(){
+  if(code===correct){
+    document.body.classList.add("unlocked");
+  } else {
+    msg.textContent = "Our special day in Mt. Ulap";
+    code="";
   }
+}
 
-  keys.addEventListener("click", e => {
-    const btn = e.target.closest("button"); if(!btn) return;
-    msg.textContent = "";
-    if(btn.dataset.act === "clear")      entry = entry.slice(0,-1);
-    else if(btn.dataset.act === "enter"){ if(entry.length) check(); return; }
-    else if(entry.length < 4)            entry += btn.textContent;
-    draw();
-    if(entry.length === 4) check();
-  });
+/* menu */
+function openLetter(){ letter.classList.add("show"); }
+function openFlower(){ flower.classList.add("show"); }
+function openRoad(){ road.classList.add("show"); }
 
-  // ---------- road trip: ride -> stop -> photos -> next stop ----------
-  const DEST = [
-    { sign:"☕ Cozy Coffee Shop", photos:[
-        {cap:"First sips together", g:"linear-gradient(135deg,#caa07a,#7a4a2b)"},
-        {cap:"Your latte smile",    g:"linear-gradient(135deg,#ffd9a8,#e0a060)"}]},
-    { sign:"🍝 Sunset Restaurant", photos:[
-        {cap:"Pasta & candlelight", g:"linear-gradient(135deg,#ff9a76,#c23b53)"},
-        {cap:"Cheers to us",        g:"linear-gradient(135deg,#ffc371,#ff5f6d)"},
-        {cap:"Dessert for two",     g:"linear-gradient(135deg,#f6d365,#fda085)"}]},
-    { sign:"🏖️ Seaside Lookout", photos:[
-        {cap:"Salty wind & you",    g:"linear-gradient(135deg,#43c6ac,#191654)"},
-        {cap:"Sunset on the shore", g:"linear-gradient(135deg,#ff9966,#ff5e62)"}]},
-  ];
-  let di = 0, tripTimer = null;
+/* ROAD TRIP */
+const stops = [
+  {t:"First Chat", d:"Where it all began"},
+  {t:"Starbucks Antipolo", d:"Coffee date ☕"},
+  {t:"Office", d:"Random stop"},
+  {t:"Next stop", d:"More memories"}
+];
 
-  function driveTo(){
-    photos.classList.remove("show");
-    building.classList.remove("here");
-    roadScene.classList.add("driving");
-    roadCap.textContent = "On the road… 🛵💨";
-    tripTimer = setTimeout(arrive, 3200);
+let i=0;
+
+function startRoad(){
+  i=0;
+  move();
+}
+
+function move(){
+  popup.classList.remove("show");
+  moto.style.left = (i*20)+"%";
+
+  setTimeout(()=>{
+    showStop();
+  },2000);
+}
+
+function showStop(){
+  popup.classList.add("show");
+  stopTitle.textContent = stops[i].t;
+  stopText.textContent = stops[i].d;
+}
+
+function nextStop(){
+  i++;
+  if(i<stops.length){
+    move();
+  } else {
+    popup.innerHTML = "<h2>End of Journey 💗</h2>";
   }
-  function arrive(){
-    const d = DEST[di];
-    roadScene.classList.remove("driving");          // motorcycle stops
-    sign.textContent = d.sign;
-    roadCap.textContent = "We've arrived at " + d.sign;
-    building.classList.add("here");                 // building slides in
-    tripTimer = setTimeout(() => showPhotos(d), 1200);
-  }
-  function showPhotos(d){
-    const last = di === DEST.length - 1;
-    photos.innerHTML = d.photos.map((p,i)=>
-      `<div class="polaroid" style="--r:${(i-(d.photos.length-1)/2)*6}deg;animation-delay:${i*.12}s">
-         <div class="pic" style="background:${p.g}"></div><div class="cap2">${p.cap}</div></div>`).join("")
-      + `<div class="go"><button data-go>${last ? "Finish the trip ✓" : "Back on the road 🛵"}</button></div>`;
-    photos.classList.add("show");
-  }
-  function startTrip(){ di = 0; driveTo(); }
-  function resetTrip(){ clearTimeout(tripTimer); roadScene.classList.remove("driving");
-    building.classList.remove("here"); photos.classList.remove("show"); }
-
-  photos.addEventListener("click", e => {
-    if(!e.target.hasAttribute("data-go")) return;
-    photos.classList.remove("show");
-    di++;
-    if(di < DEST.length) driveTo();
-    else { building.classList.remove("here"); roadCap.textContent = "What a trip 💗 Can't wait for the next one!"; }
-  });
-
-  // gifts -> modals
-  document.querySelector(".gifts").addEventListener("click", e => {
-    const g = e.target.closest(".gift"); if(!g) return;
-    const m = document.getElementById("m-" + g.dataset.modal);
-    m.classList.add("show");
-    if(g.dataset.modal === "letter"){
-      env.classList.remove("open");
-      setTimeout(() => env.classList.add("open"), 350);  // play envelope-opening animation
-    }
-    if(g.dataset.modal === "road") startTrip();
-  });
-
-  // close modals (✕ or backdrop click)
-  document.querySelectorAll(".modal").forEach(m =>
-    m.addEventListener("click", e => {
-      if(e.target === m || e.target.hasAttribute("data-close")){
-        m.classList.remove("show");
-        if(m.id === "m-road") resetTrip();
-      }
-    }));
+}
 </script>
+
 </body>
 </html>
