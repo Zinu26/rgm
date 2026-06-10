@@ -3,27 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Secret Garden</title>
+<title>Garden Memory</title>
 
 <style>
+/* ===== GLOBAL ===== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0b3d2e;
   overflow-x: hidden;
+  background: #0b1b10;
   color: white;
 }
 
-/* ---------- INTRO FLOWER GARDEN ---------- */
+/* ===== INTRO GARDEN ===== */
 #intro {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(#0b3d2e, #145c43);
+  inset: 0;
+  background: linear-gradient(#0b3d2e, #06130d);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  animation: fadeOut 3s ease 5s forwards;
 }
 
 .flower {
@@ -36,287 +37,287 @@ body {
 }
 
 @keyframes sway {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(10px); }
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(10deg); }
 }
 
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* butterflies */
 .butterfly {
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   background: yellow;
   border-radius: 50%;
-  animation: fly 6s linear infinite;
+  animation: fly 8s infinite linear;
 }
 
 @keyframes fly {
-  0% { transform: translateX(-100px) translateY(0); }
-  100% { transform: translateX(120vw) translateY(-200px); }
+  0% { transform: translate(0,0); }
+  50% { transform: translate(200px,-100px); }
+  100% { transform: translate(-100px,50px); }
 }
 
-/* ---------- SPLIT TRANSITION ---------- */
-.split {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.split div {
-  width: 50%;
-  background: #0b3d2e;
-  transition: transform 1.5s ease;
-}
-
-.split.active .left { transform: translateX(-100%); }
-.split.active .right { transform: translateX(100%); }
-
-/* ---------- PASSCODE ---------- */
-#lockscreen {
+/* ===== SPLIT SCREEN ===== */
+#split {
   display: none;
   height: 100vh;
+  background: #123b2a;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: #123;
 }
 
-.keypad button {
-  font-size: 20px;
-  margin: 5px;
-  padding: 15px;
+#split.active {
+  display: flex;
 }
 
-/* ---------- MENU ---------- */
+/* keypad */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 10px;
+}
+
+.key {
+  background: #1f5c40;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+#display {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* ===== MENU ===== */
 #menu {
   display: none;
-  text-align: center;
-  padding-top: 50px;
+  height: 100vh;
+  background: #08140d;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.card {
-  margin: 20px;
-  padding: 20px;
-  background: rgba(255,255,255,0.1);
-  display: inline-block;
+.btn {
+  padding: 15px 25px;
+  margin: 10px;
+  background: #2d7a55;
   cursor: pointer;
+  border-radius: 10px;
 }
 
-/* ---------- LETTER ---------- */
-#letterPage, #flowerPage, #ridePage {
+/* ===== LETTER ===== */
+.modal {
   display: none;
-  padding: 30px;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
 }
 
-/* envelope */
 .envelope {
   width: 200px;
   height: 120px;
-  background: #e0c097;
+  background: white;
   position: relative;
-  margin: auto;
   cursor: pointer;
 }
 
 .letter {
-  width: 180px;
-  height: 200px;
+  display: none;
   background: white;
-  margin: auto;
-  transform: scaleY(0);
-  transition: 1s;
   color: black;
-  padding: 10px;
+  padding: 20px;
+  margin-top: 10px;
 }
 
-/* bouquet */
+/* ===== FLOWER ===== */
 .bouquet {
-  width: 200px;
-  height: 200px;
-  margin: auto;
-  background: pink;
-  border-radius: 50%;
+  display: flex;
+  gap: 10px;
   cursor: pointer;
-  transition: transform 1s;
 }
 
-.bouquet:hover {
-  transform: scale(1.1);
+/* ===== ROADTRIP ===== */
+#roadtrip {
+  display: none;
+  padding: 20px;
 }
 
-/* roadtrip */
-.car {
-  font-size: 40px;
-  position: relative;
-  animation: drive 3s infinite alternate;
+.motorcycle {
+  width: 100px;
+  height: 50px;
+  background: red;
+  margin: 20px;
+  animation: moveBike 4s infinite alternate;
 }
 
-@keyframes drive {
+@keyframes moveBike {
   from { transform: translateX(0); }
-  to { transform: translateX(100px); }
+  to { transform: translateX(200px); }
 }
 
 .popup {
-  background: rgba(0,0,0,0.8);
-  padding: 20px;
   position: fixed;
-  top: 20%;
-  left: 20%;
-  width: 60%;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
   display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
+<!-- ===== INTRO ===== -->
 <div id="intro">
-  <h1>Secret Garden</h1>
+  <h1>Welcome to Our Garden</h1>
+
+  <script>
+    for (let i=0;i<30;i++){
+      let f=document.createElement("div");
+      f.className="flower";
+      f.style.left=Math.random()*100+"vw";
+      f.style.top=Math.random()*100+"vh";
+      document.write(f.outerHTML);
+    }
+  </script>
+
+  <div class="butterfly"></div>
 </div>
 
-<div class="split" id="split">
-  <div class="left"></div>
-  <div class="right"></div>
-</div>
+<!-- ===== PASSCODE ===== -->
+<div id="split">
+  <div id="display"></div>
 
-<!-- LOCK -->
-<div id="lockscreen">
-  <h2>Enter Passcode</h2>
-  <input id="code" maxlength="4" readonly />
   <div class="keypad">
-    <button onclick="press(1)">1</button>
-    <button onclick="press(2)">2</button>
-    <button onclick="press(3)">3</button>
-    <button onclick="press(4)">4</button><br/>
-    <button onclick="press(5)">5</button>
-    <button onclick="press(6)">6</button>
-    <button onclick="press(7)">7</button><br/>
-    <button onclick="press(8)">8</button>
-    <button onclick="press(9)">9</button>
-    <button onclick="press(0)">0</button>
+    <div class="key" onclick="press(1)">1</div>
+    <div class="key" onclick="press(2)">2</div>
+    <div class="key" onclick="press(3)">3</div>
+    <div class="key" onclick="press(4)">4</div>
+    <div class="key" onclick="press(5)">5</div>
+    <div class="key" onclick="press(6)">6</div>
+    <div class="key" onclick="press(7)">7</div>
+    <div class="key" onclick="press(8)">8</div>
+    <div class="key" onclick="press(9)">9</div>
+    <div class="key" onclick="clearCode()">C</div>
+    <div class="key" onclick="press(0)">0</div>
+    <div class="key" onclick="check()">OK</div>
   </div>
-  <button onclick="checkCode()">Enter</button>
+
   <p id="hint"></p>
 </div>
 
-<!-- MENU -->
+<!-- ===== MENU ===== -->
 <div id="menu">
-  <h1>Choose</h1>
-  <div class="card" onclick="openLetter()">Letter</div>
-  <div class="card" onclick="openFlower()">Flower</div>
-  <div class="card" onclick="openRide()">Roadtrip</div>
+  <div class="btn" onclick="openLetter()">Letter</div>
+  <div class="btn" onclick="openFlower()">Flower</div>
+  <div class="btn" onclick="openRoadtrip()">Roadtrip</div>
 </div>
 
-<!-- LETTER -->
-<div id="letterPage">
-  <div class="envelope" onclick="openEnvelope()"></div>
-  <div class="letter" id="letter">
-    Click to unfold love letter ❤️
+<!-- ===== LETTER ===== -->
+<div class="modal" id="letterModal">
+  <div onclick="openLetterContent()" class="envelope">💌 Click envelope</div>
+  <div class="letter" id="letterContent">
+    Click again to unfold love letter ❤️
   </div>
 </div>
 
-<!-- FLOWER -->
-<div id="flowerPage">
-  <h3>A bouquet for you 🌸</h3>
-  <div class="bouquet" onclick="alert('You make everything bloom.')"></div>
+<!-- ===== FLOWER ===== -->
+<div class="modal" id="flowerModal">
+  <div class="bouquet" onclick="alert('Flowers are blooming 🌸')">
+    🌸🌸🌸🌸🌸
+  </div>
 </div>
 
-<!-- ROADTRIP -->
-<div id="ridePage">
-  <h2>Roadtrip Adventure 🏍️</h2>
-  <div class="car">🏍️👦👧</div>
-  <button onclick="startTrip()">Start Trip</button>
+<!-- ===== ROADTRIP ===== -->
+<div id="roadtrip">
+  <div class="motorcycle"></div>
+  <button onclick="nextStop()">Next Stop</button>
 </div>
 
-<div class="popup" id="popup">
-  <p id="popupText"></p>
-  <button onclick="nextStop()">Next</button>
-</div>
+<div class="popup" id="popup"></div>
 
 <script>
-let input = "";
-let stopIndex = 0;
+let code = "";
 
+/* ===== PASSCODE ===== */
 function press(n){
-  if(input.length < 4){
-    input += n;
-    document.getElementById("code").value = input;
-  }
+  code += n;
+  document.getElementById("display").innerText = code;
 }
 
-function checkCode(){
-  if(input === "0321"){
-    document.getElementById("split").classList.add("active");
-    setTimeout(()=>{
-      document.getElementById("lockscreen").style.display = "none";
-      document.getElementById("menu").style.display = "block";
-    },1500);
+function clearCode(){
+  code = "";
+  document.getElementById("display").innerText = "";
+}
+
+function check(){
+  if(code === "0321"){
+    document.getElementById("split").style.display="none";
+    document.getElementById("menu").style.display="flex";
   } else {
     document.getElementById("hint").innerText =
     "Our special day at Mt. Ulap";
-    input = "";
-    document.getElementById("code").value = "";
+    clearCode();
   }
 }
 
-/* INTRO FLOW */
+/* show split after intro */
 setTimeout(()=>{
-  document.getElementById("intro").style.display="none";
   document.getElementById("split").classList.add("active");
-  setTimeout(()=>{
-    document.getElementById("lockscreen").style.display="flex";
-  },1000);
-},2000);
+}, 5000);
 
-/* LETTER */
+/* ===== LETTER ===== */
 function openLetter(){
-  document.getElementById("menu").style.display="none";
-  document.getElementById("letterPage").style.display="block";
+  document.getElementById("letterModal").style.display="flex";
+}
+function openLetterContent(){
+  document.getElementById("letterContent").style.display="block";
 }
 
-function openEnvelope(){
-  document.getElementById("letter").style.transform="scaleY(1)";
-}
-
-/* FLOWER */
+/* ===== FLOWER ===== */
 function openFlower(){
-  document.getElementById("menu").style.display="none";
-  document.getElementById("flowerPage").style.display="block";
+  document.getElementById("flowerModal").style.display="flex";
 }
 
-/* ROADTRIP */
-let stops = Array.from({length:50}, (_,i)=>"Stop "+(i+1)+": Memory " + (i+1));
-
-function openRide(){
-  document.getElementById("menu").style.display="none";
-  document.getElementById("ridePage").style.display="block";
+/* ===== ROADTRIP ===== */
+function openRoadtrip(){
+  document.getElementById("roadtrip").style.display="block";
 }
 
-function startTrip(){
-  stopIndex = 0;
-  showPopup();
-}
+let stops = [
+  "First message / memory here",
+  "Starbucks Antipolo",
+  "Office Building",
+  "Next location..."
+  // EXTEND THIS LIST TO 50 STOPS
+];
 
-function showPopup(){
-  document.getElementById("popup").style.display="block";
-  document.getElementById("popupText").innerText =
-    stops[stopIndex];
-}
+let index = 0;
 
 function nextStop(){
-  stopIndex++;
-  if(stopIndex < stops.length){
-    showPopup();
-  } else {
-    document.getElementById("popupText").innerText =
-    "End of Journey ❤️";
-  }
+  if(index >= stops.length) return;
+
+  document.getElementById("popup").style.display="flex";
+  document.getElementById("popup").innerHTML =
+    "<h2>" + stops[index] + "</h2><button onclick='closePopup()'>Next</button>";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+  index++;
 }
 </script>
 
