@@ -3,215 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Special Garden</title>
+    <title>Our Garden of Memories</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        /* --- General CSS --- */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Georgia', serif; /* A romantic font */
-            background-color: #fce4ec; /* Light pink background */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
-
-        /* --- Passcode Screen (Screen 1) --- */
-        #passcode-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
+        @keyframes float-butterfly {
+            0% { transform: translate(-10vw, 100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(110vw, -10vh) scale(1); opacity: 0; }
         }
-
-        /* The garden image split effect */
-        .garden-half {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            /* REPLACE WITH YOUR GARDEN IMAGE */
-            background-image: url('images/garden.jpg');
-            background-size: cover;
-            background-position: center;
-            transition: transform 1s ease-in-out;
-            z-index: 5;
+        @keyframes drive {
+            0% { left: -10%; }
+            100% { left: 40%; }
         }
-
-        #garden-left { left: 0; }
-        #garden-right { right: 0; background-position: right center; }
-
-        /* When the 'loaded' class is added, the halves split */
-        .loaded #garden-left { transform: translateX(-100%); }
-        .loaded #garden-right { transform: translateX(100%); }
-
-        /* The passcode input UI */
-        #passcode-container {
-            position: relative;
-            z-index: 6;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: none; /* Initially hidden */
+        @keyframes drive-away {
+            0% { left: 40%; }
+            100% { left: 110%; }
         }
-
-        #passcode-container h2 { color: #880e4f; }
-        
-        #passcode-input {
-            font-size: 24px;
-            letter-spacing: 5px;
-            text-align: center;
-            width: 150px;
-            border: 2px solid #880e4f;
-            border-radius: 5px;
-            padding: 5px;
-        }
-
-        #clue-message {
-            color: #d81b60;
-            font-style: italic;
-            margin-top: 10px;
-            font-size: 14px;
-            display: none;
-        }
-
-        /* --- Main Menu (Screen 2) --- */
-        #menu-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: none; /* Hidden until correct passcode */
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(to bottom, #fce4ec, #e1f5fe);
-            opacity: 0;
-            transition: opacity 1s ease;
-            flex-direction: column;
-            z-index: 1;
-        }
-
-        .show-menu {
-            display: flex !important;
-            opacity: 1 !important;
-        }
-
-        .menu-options {
-            display: flex;
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .menu-btn {
-            background-color: #880e4f;
-            color: white;
-            padding: 20px 40px;
-            border: none;
-            border-radius: 10px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-        }
-
-        .menu-btn:hover { background-color: #ad1457; transform: scale(1.05); }
-
-        /* --- Butterfly Animation CSS --- */
-        .butterfly {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            /* REPLACE WITH YOUR BUTTERFLY IMAGE */
-            background-image: url('images/butterfly.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.7;
-            z-index: 20; /* Keep them above everything */
-            animation: fly 10s infinite linear;
-        }
-
-        @keyframes fly {
-            0% { transform: translate(-10%, 10vh) rotate(0deg); }
-            25% { transform: translate(30vw, 30vh) rotate(20deg); }
-            50% { transform: translate(60vw, 10vh) rotate(-15deg); }
-            75% { transform: translate(90vw, 40vh) rotate(10deg); }
-            100% { transform: translate(110vw, 20vh) rotate(0deg); }
-        }
-
-        /* Give butterflies unique paths */
-        .bf1 { animation-delay: 0s; animation-duration: 12s; top: 10%; }
-        .bf2 { animation-delay: 2s; animation-duration: 15s; top: 40%; }
-        .bf3 { animation-delay: 4s; animation-duration: 10s; top: 70%; }
-
+        .sway-flower { animation: sway 3s ease-in-out infinite; transform-origin: bottom center; }
+        .butterfly { animation: float-butterfly 12s linear infinite; }
+        .gate-left { transition: transform 1.5s ease-in-out; }
+        .gate-right { transition: transform 1.5s ease-in-out; }
+        .split .gate-left { transform: translateX(-100%); }
+        .split .gate-right { transform: translateX(100%); }
     </style>
 </head>
-<body>
+<body class="bg-gradient-to-b from-teal-50 to-emerald-100 min-h-screen overflow-hidden font-sans relative">
 
-    <!-- Butterflies -->
-    <div class="butterfly bf1"></div>
-    <div class="butterfly bf2"></div>
-    <div class="butterfly bf3"></div>
+    <!-- Butterflies floating around globally -->
+    <div class="absolute inset-0 pointer-events-none z-40 overflow-hidden">
+        <div class="butterfly absolute text-3xl" style="animation-delay: 0s; top: 20%;">🦋</div>
+        <div class="butterfly absolute text-2xl" style="animation-delay: 4s; top: 50%; animation-duration: 15s;">🦋</div>
+        <div class="butterfly absolute text-4xl" style="animation-delay: 8s; top: 10%; animation-duration: 10s;">🦋</div>
+    </div>
 
-    <!-- Screen 1: Passcode -->
-    <div id="passcode-screen">
-        <div id="garden-left" class="garden-half"></div>
-        <div id="garden-right" class="garden-half"></div>
-
-        <div id="passcode-container">
-            <h2>Enter passcode</h2>
-            <input type="text" id="passcode-input" maxlength="4" placeholder="....">
-            <div id="clue-message">Clue: Our special day in Mt. Ulap</div>
+    <!-- SCREEN 1: SPLIT GATE / FLOWER GARDEN INITIAL ANIMATION -->
+    <div id="gate-container" class="absolute inset-0 z-50 flex pointer-events-none">
+        <!-- Left Curtain -->
+        <div id="gate-left" class="gate-left w-1/2 h-full bg-emerald-800 flex justify-end items-end relative overflow-hidden border-r-4 border-amber-400">
+            <div class="flex space-x-2 p-4">
+                <span class="sway-flower text-6xl" style="animation-delay: 0s;">🌷</span>
+                <span class="sway-flower text-7xl" style="animation-delay: 0.5s;">🌹</span>
+                <span class="sway-flower text-5xl" style="animation-delay: 0.2s;">🌸</span>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-end pr-10">
+                <h1 class="text-white text-4xl font-serif font-bold">Welcome to...</h1>
+            </div>
+        </div>
+        <!-- Right Curtain -->
+        <div id="gate-right" class="gate-right w-1/2 h-full bg-emerald-800 flex justify-start items-end relative overflow-hidden border-left-4 border-amber-400">
+            <div class="flex space-x-2 p-4">
+                <span class="sway-flower text-5xl" style="animation-delay: 0.7s;">🌸</span>
+                <span class="sway-flower text-7xl" style="animation-delay: 0.3s;">🌻</span>
+                <span class="sway-flower text-6xl" style="animation-delay: 0.1s;">🌷</span>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-start pl-10">
+                <h1 class="text-white text-4xl font-serif font-bold">Our Garden</h1>
+            </div>
         </div>
     </div>
 
-    <!-- Screen 2: Main Menu -->
-    <div id="menu-screen">
-        <h1>Welcome, [Your Names Here]!</h1>
-        <div class="menu-options">
-            <button class="menu-btn" onclick="openModule('letter')">Letter</button>
-            <button class="menu-btn" onclick="openModule('flower')">Flower</button>
-            <button class="menu-btn" onclick="openModule('roadtrip')">Roadtrip</button>
+    <!-- SCREEN 2: PASSCODE LOCK (Revealed under the split) -->
+    <div id="passcode-screen" class="absolute inset-0 flex flex-col items-center justify-center z-30 transition-opacity duration-1000 hidden">
+        <!-- Decorative Garden Background Background -->
+        <div class="absolute bottom-0 w-full flex justify-between px-10 pointer-events-none opacity-40">
+            <div class="text-8xl sway-flower">🌻🌻🌷🌹</div>
+            <div class="text-8xl sway-flower" style="animation-delay: 0.5s;">🌹🌷🌻🌻</div>
+        </div>
+
+        <div class="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-2xl max-w-sm w-full border border-emerald-200 text-center relative z-10">
+            <h2 class="text-2xl font-bold text-emerald-800 mb-2">Enter the Passkey</h2>
+            <p id="clue-text" class="text-sm text-slate-500 mb-4 h-5">Hint: A special date</p>
+            
+            <!-- Passcode Display -->
+            <div id="passcode-display" class="bg-emerald-50 text-emerald-900 text-3xl font-mono tracking-widest py-3 rounded-xl mb-6 shadow-inner border border-emerald-100 h-14 flex items-center justify-center"></div>
+            
+            <!-- Keypad Matrix -->
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <button onclick="pressKey('1')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">1</button>
+                <button onclick="pressKey('2')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">2</button>
+                <button onclick="pressKey('3')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">3</button>
+                <button onclick="pressKey('4')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">4</button>
+                <button onclick="pressKey('5')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">5</button>
+                <button onclick="pressKey('6')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">6</button>
+                <button onclick="pressKey('7')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">7</button>
+                <button onclick="pressKey('8')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">8</button>
+                <button onclick="pressKey('9')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">9</button>
+                <button onclick="clearDisplay()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-lg cursor-pointer">Clear</button>
+                <button onclick="pressKey('0')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold py-4 rounded-2xl shadow active:scale-95 transition text-xl cursor-pointer">0</button>
+                <button onclick="checkPasscode()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl shadow active:scale-95 transition text-lg cursor-pointer">OK</button>
+            </div>
         </div>
     </div>
 
+    <!-- SCREEN 3: THE MAIN MENU CHOICES -->
+    <div id="main-menu" class="absolute inset-0 flex flex-col items-center justify-center z-20 hidden px-4">
+        <h2 class="text-3xl font-serif font-bold text-emerald-900 mb-12 text-center drop-shadow-sm">Choose Your Destination</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl w-full">
+            <!-- Choice 1: Letter -->
+            <button onclick="openFeature('letter')" class="bg-white/70 backdrop-blur hover:bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl border border-emerald-100 flex flex-col items-center group transition duration-3xl transform hover:-translate-y-2 cursor-pointer">
+                <div class="text-6xl mb-4 group-hover:scale-110 transition duration-300">✉️</div>
+                <h3 class="text-xl font-bold text-emerald-800">Our Letter</h3>
+                <p class="text-sm text-slate-500 text-center mt-2">A message straight from the heart.</p>
+            </button>
+            <!-- Choice 2: Flower -->
+            <button onclick="openFeature('flower')" class="bg-white/70 backdrop-blur hover:bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl border border-emerald-100 flex flex-col items-center group transition duration-3xl transform hover:-translate-y-2 cursor-pointer">
+                <div class="text-6xl mb-4 group-hover:scale-110 transition duration-300">💐</div>
+                <h3 class="text-xl font-bold text-emerald-800">Your Bouquet</h3>
+                <p class="text-sm text-slate-500 text-center mt-2">Interact with your favorite carnations.</p>
+            </button>
+            <!-- Choice 3: Roadtrip -->
+            <button onclick="openFeature('roadtrip')" class="bg-white/70 backdrop-blur hover:bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl border border-emerald-100 flex flex-col items-center group transition duration-3xl transform hover:-translate-y-2 cursor-pointer">
+                <div class="text-6xl mb-4 group-hover:scale-110 transition duration-300">🛵</div>
+                <h3 class="text-xl font-bold text-emerald-800">The Roadtrip</h3>
+                <p class="text-sm text-slate-500 text-center mt-2">A 50-stop timeline of our unique journey.</p>
+            </button>
+        </div>
+    </div>
+
+    <!-- FEATURE FEATURE PANEL CONTAINER (MODAL POPUP STYLE OVERLAY) -->
+    <div id="feature-overlay" class="absolute inset-0 bg-slate-900/40 backdrop-blur-md z-40 hidden flex items-center justify-center p-4">
+        <button onclick="closeFeature()" class="absolute top-6 right-6 bg-white text-slate-800 font-bold px-4 py-2 rounded-full shadow-lg hover:bg-rose-500 hover:text-white transition cursor-pointer z-50">✕ Close Menu</button>
+        
+        <!-- CONTENT: LETTER -->
+        <div id="content-letter" class="hidden flex flex-col items-center justify-center w-full max-w-lg">
+            <!-- Envelope wrapper -->
+            <div id="envelope" onclick="openEnvelope()" class="w-64 h-44 bg-amber-100 rounded-b-xl border-t-2 border-amber-200 shadow-2xl relative flex items-center justify-center cursor-pointer transition transform hover:scale-105">
+                <div class="absolute top-0 left-0 w-0 h-0 border-l-[128px] border-l-transparent border-r-[128px] border-r-transparent border-t-[88px] border-t-amber-300/80 origin-top transition-transform duration-500" id="envelope-flap"></div>
+                <span class="text-emerald-800 font-serif font-bold text-center z-10 px-4">Click to Open My Heart</span>
+                
+                <!-- Folded Letter inside -->
+                <div id="folded-letter" onclick="unfoldLetter(event)" class="absolute w-56 h-36 bg-white border border-slate-200 shadow-md rounded transition-all duration-700 opacity-0 z-0 flex items-center justify-center text-center p-2 font-mono text-xs text-slate-400">
+                    [ Folded Secret Letter - Click to Unfold ]
+                </div>
+            </div>
+
+            <!-- Full Unfolded Letter Box -->
+            <div id="unfolded-letter" class="hidden bg-amber-50 p-8 rounded-xl shadow-2xl max-w-md w-full border border-amber-200 max-h-[70vh] overflow-y-auto mt-4 font-serif text-slate-800 leading-relaxed transform scale-95 opacity-0 transition-all duration-500">
+                <h3 class="text-2xl font-bold text-emerald-800 border-b border-amber-200 pb-2 mb-4">My Dearest,</h3>
+                <p class="mb-4">Writing this brings back every single laugh, smile, and beautiful milestone we've shared together. From the very beginning up to this very moment, my feelings for you have only grown deeper and stronger.</p>
+                <p class="mb-4">You are my safe haven, my ultimate adventure, and my absolute favorite chapter in life. Thank you for staying by my side, through every winding road, warm coffee run, and quiet evening.</p>
+                <p class="font-bold text-right text-emerald-700 mt-6">— Forever Yours ❤️</p>
+            </div>
+        </div>
+
+        <!-- CONTENT: FLOWER BOUQUET -->
+        <div id="content-flower" class="hidden flex flex-col items-center text-center w-full max-w-md">
+            <div class="bg-white/90 backdrop-blur rounded-2xl p-4 shadow-md mb-6 max-w-xs">
+                <p id="flower-message" class="text-emerald-900 font-medium text-lg italic">"A bouquet of pure carnations, symbolizing my deep love and admiration for you. Click them to see them bloom!"</p>
+            </div>
+            <!-- Interactive Bouquet Arena -->
+            <div onclick="interactFlowers()" class="relative w-80 h-90 bg-emerald-900/10 rounded-full flex items-center justify-center cursor-pointer group shadow-inner">
+                <span class="text-[12rem] select-none transform group-hover:scale-105 transition duration-500">💐</span>
+                <!-- Extra dynamic floating carnations on touch -->
+                <div id="carnation-sparkles" class="absolute inset-0 pointer-events-none"></div>
+            </div>
+            <p class="text-xs text-white/80 mt-4 tracking-wider uppercase">Tap the bouquet to feel the love</p>
+        </div>
+
+        <!-- CONTENT: ROADTRIP ROAD ADVENTURE (50 STOPS) -->
+        <div id="content-roadtrip" class="hidden flex flex-col justify-between items-center w-full h-full relative p-4 max-w-5xl">
+            
+            <!-- Road Horizon Arena -->
+            <div class="w-full h-40 bg-slate-800/40 border-y-4 border-dashed border-white/50 relative rounded-2xl overflow-hidden shadow-inner mt-20">
+                <!-- Moving background lines to give illusion of depth -->
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-amber-400"></div>
+                
+                <!-- Motorcycle Sprite with 2 passengers -->
+                <div id="motorcycle" class="absolute bottom-4 left-[-10%] text-5xl transition-all duration-1000 ease-in-out select-none">
+                    🛵<span class="absolute top-[-20px] left-2 text-2xl">🧑‍🤝‍🧑</span>
+                </div>
+
+                <!-- Destination Markers visually dropping onto road -->
+                <div id="destination-flag" class="absolute bottom-6 right-1/2 translate-x-1/2 text-4xl opacity-0 transition-opacity duration-300">📍</div>
+            </div>
+
+            <!-- Active Pop-up Story Card Content -->
+            <div id="story-popup" class="bg-white p-6 rounded-2xl shadow-2xl border border-emerald-100 max-w-md w-full text-center transition-all duration-300 transform scale-100 z-10 my-auto">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="stop-counter" class="bg-emerald-100 text-emerald-800 font-mono text-xs px-2.5 py-1 rounded-full font-bold">Stop 1 / 50</span>
+                    <span id="stop-icon" class="text-2xl">💬</span>
+                </div>
+                <h4 id="stop-title" class="text-xl font-bold text-slate-800 mb-2">Our First Conversation</h4>
+                <div class="bg-slate-50 rounded-xl p-4 min-h-[100px] flex items-center justify-center text-slate-600 italic border border-slate-100 mb-4 text-sm" id="stop-desc">
+                    "Hey! I saw your profile and just had to say hi..." And just like that, our incredible timeline officially sparked to life!
+                </div>
+                <button onclick="advanceStop()" id="next-stop-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow active:scale-95 transition cursor-pointer">
+                    Next Destination ➔
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- AUDIO BACKBONE EFFECTS (OPTIONAL PLACEHOLDERS) -->
     <script>
-        // --- JavaScript for Step 1 ---
+        // PASSCODE INFRASTRUCTURE
+        let currentInput = "";
+        const correctCode = "0321";
 
-        // 1. Loading and Splitting
-        window.addEventListener('load', () => {
-            // Give a tiny delay before splitting
+        // Auto initiate gate animation separation sequence on initialization
+        window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
-                document.getElementById('passcode-screen').classList.add('loaded');
-                document.getElementById('passcode-container').style.display = 'block';
-            }, 1000); 
+                const container = document.getElementById('gate-container');
+                container.classList.add('split');
+                
+                // Expose core screen after partition actions conclude
+                setTimeout(() => {
+                    document.getElementById('passcode-screen').classList.remove('hidden');
+                }, 800);
+            }, 2500); // Wait 2.5s for initial garden sway admiration
         });
 
-        // 2. Passcode Verification
-        const passcodeField = document.getElementById('passcode-input');
-        const clueField = document.getElementById('clue-message');
-        const correctPasscode = "0321";
-
-        passcodeField.addEventListener('input', () => {
-            if (passcodeField.value === correctPasscode) {
-                // Correct Passcode -> Go to Menu
-                document.getElementById('passcode-screen').style.display = 'none';
-                document.getElementById('menu-screen').classList.add('show-menu');
-            } else if (passcodeField.value.length === 4) {
-                // Wrong Passcode (4 digits reached)
-                clueField.style.display = 'block';
-                passcodeField.value = ""; // Clear input
-                passcodeField.style.borderColor = "#ff1744"; // Blink red
-                setTimeout(() => passcodeField.style.borderColor = "#880e4f", 1000);
+        function pressKey(num) {
+            if (currentInput.length < 4) {
+                currentInput += num;
+                updateDisplay();
             }
-        });
+        }
 
-        // --- JavaScript needed to manage screens ---
-        function openModule(module) {
-            alert("You clicked " + module + ". This will open " + module + ".html!");
-            // IN THE FINAL VERSION, USE: window.location.href = module + ".html";
+        function clearDisplay() {
+            currentInput = "";
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const display = document.getElementById('passcode-display');
+            display.textContent = "•".repeat(currentInput.length);
+        }
+
+        function checkPasscode() {
+            const clueBox = document.getElementById('clue-text');
+            if (currentInput === correctCode) {
+                clueBox.textContent = "Correct! Opening your garden...";
+                clueBox.className = "text-sm text-emerald-600 font-bold mb-4 h-5";
+                setTimeout(() => {
+                    document.getElementById('passcode-screen').classList.add('hidden');
+                    document.getElementById('main-menu').classList.remove('hidden');
+                }, 1000);
+            } else {
+                // Corrected Grammar Variant applied instantly on mistype alert
+                clueBox.textContent = "Incorrect. Clue: Our special day on Mt. Ulap";
+                clueBox.className = "text-sm text-rose-500 font-bold mb-4 h-5 animate-bounce";
+                currentInput = "";
+                updateDisplay();
+            }
+        }
+
+        // FEATURE LAYER NAVIGATION OVERLAYS
+        function openFeature(type) {
+            const overlay = document.getElementById('feature-overlay');
+            overlay.classList.remove('hidden');
+            
+            // Turn off alternative elements safely
+            document.getElementById('content-letter').classList.add('hidden');
+            document.getElementById('content-flower').classList.add('hidden');
+            document.getElementById('content-roadtrip').classList.add('hidden');
+
+            if (type === 'letter') {
+                document.getElementById('content-letter').classList.remove('hidden');
+                resetLetterState();
+            } else if (type === 'flower') {
+                document.getElementById('content-flower').classList.remove('hidden');
+            } else if (type === 'roadtrip') {
+                document.getElementById('content-roadtrip').classList.remove('hidden');
+                initiateRoadtrip();
+            }
+        }
+
+        function closeFeature() {
+            document.getElementById('feature-overlay').classList.add('hidden');
+        }
+
+        // ENVELOPE STRUCTURAL FUNCTIONS
+        function resetLetterState() {
+            const flap = document.getElementById('envelope-flap');
+            const folded = document.getElementById('folded-letter');
+            const unfolded = document.getElementById('unfolded-letter');
+            
+            flap.style.transform = "rotateX(0deg)";
+            folded.classList.add('opacity-0');
+            folded.style.zIndex = "0";
+            folded.style.transform = "translateY(0)";
+            unfolded.classList.add('hidden');
+            unfolded.classList.add('opacity-0');
+        }
+
+        function openEnvelope() {
+            const flap = document.getElementById('envelope-flap');
+            const folded = document.getElementById('folded-letter');
+            
+            flap.style.transform = "rotateX(180deg)";
+            setTimeout(() => {
+                folded.classList.remove('opacity-0');
+                folded.style.zIndex = "30";
+                folded.style.transform = "translateY(-60px)";
+            }, 400);
+        }
+
+        function unfoldLetter(event) {
+            event.stopPropagation(); // Avoid refiring parent element click triggers
+            const folded = document.getElementById('folded-letter');
+            const unfolded = document.getElementById('unfolded-letter');
+            
+            folded.classList.add('opacity-0');
+            setTimeout(() => {
+                unfolded.classList.remove('hidden');
+                setTimeout(() => {
+                    unfolded.classList.remove('opacity-0');
+                    unfolded.classList.remove('scale-95');
+                }, 50);
+            }, 300);
+        }
+
+        // INTERACTIVE FLOWER EXTRA ACTION EFFECTS
+        const flowerPhrases = [
+            "Your love brightens up my entire day!",
+            "Like these carnations, my admiration for you grows endlessly.",
+            "You are absolutely beautiful, inside and out.",
+            "Every petal represents a sweet memory we share.",
+            "Thank you for blooming beautifully in my life!"
+        ];
+
+        function interactFlowers() {
+            const msg = document.getElementById('flower-message');
+            const randomPhrase = flowerPhrases[Math.floor(Math.random() * flowerPhrases.length)];
+            msg.textContent = randomPhrase;
+
+            // Generate floating mini-petals instantly
+            const wrapper = document.getElementById('carnation-sparkles');
+            for(let i=0; i<6; i++) {
+                const petal = document.createElement('span');
+                petal.textContent = "🌸";
+                petal.className = "absolute text-xl transition-all duration-1000 ease-out pointer-events-none";
+                petal.style.left = "50%";
+                petal.style.top = "50%";
+                wrapper.appendChild(petal);
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 50 + Math.random() * 80;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+
+                setTimeout(() => {
+                    petal.style.transform = `translate(${x}px, ${y}px)`;
+                    petal.style.opacity = "0";
+                }, 50);
+
+                setTimeout(() => petal.remove(), 1050);
+            }
+        }
+
+        // ROADTRIP DATA COMPILATION - GENERATIVE DYNAMIC ALLOCATION OF 50 STOPS
+        let currentStopIndex = 0;
+        const totalStops = 50;
+        
+        // Custom key milestone maps defined explicitly, fallback algorithmic processing handles procedural fillers beautifully
+        const customMilestones = {
+            0: { title: "Our First Conversation", desc: `"Hey! I saw your profile and just had to say hi..." And just like that, our incredible timeline officially sparked to life!`, icon: "💬" },
+            1: { title: "Starbucks Coffee Shop in Antipolo", desc: "Our first official adventure stop! Sharing warm coffee over crisp night views and endless stories.", icon: "☕" },
+            2: { title: "The Office Building Visit", desc: "Dropping by to see you work, keeping each other motivated, and sharing those secret, quick midday lunch breaks.", icon: "🏢" },
+            49: { title: "Our Eternal Destination & Beyond", desc: "50 chapters down and an entire lifetime left to explore. Thank you for riding along with me through every single mile. I love you!", icon: "❤️" }
+        };
+
+        function getStopData(index) {
+            if (customMilestones[index]) return customMilestones[index];
+            
+            // Procedural generation fills up all intermediate road items seamlessly
+            const generalTitles = ["Random Road Discovery", "Late Night Cruise", "Scenic Overlook Point", "Snack Attack Pitstop", "Rainy Ride Memory", "Sunset Chasing Route"];
+            const selectedTitle = generalTitles[index % generalTitles.length] + ` (#${index + 1})`;
+            return {
+                title: selectedTitle,
+                desc: `Stop ${index + 1} on our endless map! Every single kilometer spent traveling together on this motorcycle makes our magical bond feel even more indestructible.`,
+                icon: "🛣️"
+            };
+        }
+
+        function initiateRoadtrip() {
+            currentStopIndex = 0;
+            renderStop();
+        }
+
+        function renderStop() {
+            const data = getStopData(currentStopIndex);
+            document.getElementById('stop-counter').textContent = `Stop ${currentStopIndex + 1} / ${totalStops}`;
+            document.getElementById('stop-title').textContent = data.title;
+            document.getElementById('stop-desc').textContent = data.desc;
+            document.getElementById('stop-icon').textContent = data.icon;
+            
+            const cycle = document.getElementById('motorcycle');
+            const flag = document.getElementById('destination-flag');
+            const btn = document.getElementById('next-stop-btn');
+
+            // Reset visual cues
+            cycle.style.animation = "none";
+            cycle.style.left = "40%";
+            flag.style.opacity = "1";
+            
+            if (currentStopIndex === totalStops - 1) {
+                btn.textContent = "Restart Journey ↺";
+            } else {
+                btn.textContent = "Next Destination ➔";
+            }
+        }
+
+        function advanceStop() {
+            if (currentStopIndex >= totalStops - 1) {
+                currentStopIndex = 0;
+                renderStop();
+                return;
+            }
+
+            const cycle = document.getElementById('motorcycle');
+            const flag = document.getElementById('destination-flag');
+            const popup = document.getElementById('story-popup');
+
+            // 1. Minimize pop up card presentation layer momentarily
+            popup.style.transform = "scale(0.8)";
+            popup.style.opacity = "0";
+            flag.style.opacity = "0";
+
+            // 2. Drive vehicle forward into next target sector framework
+            cycle.style.animation = "drive-away 0.8s forwards ease-in";
+
+            setTimeout(() => {
+                currentStopIndex++;
+                
+                // 3. Re-place bike onto coming approach runway safely
+                cycle.style.animation = "drive 0.8s forwards ease-out";
+                
+                setTimeout(() => {
+                    renderStop();
+                    // 4. Smooth structural pop-up re-emergence sequence
+                    popup.style.transform = "scale(1)";
+                    popup.style.opacity = "1";
+                }, 800);
+
+            }, 800);
         }
     </script>
 </body>
