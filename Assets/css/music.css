@@ -1,0 +1,194 @@
+/* Assets/css/music.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.back-btn-container {
+    position: absolute;
+    top: 20px; left: 20px;
+    z-index: 10;
+}
+.back-btn {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none; padding: 8px 16px;
+    border-radius: 20px; cursor: pointer;
+    font-weight: bold; color: #6b4c9a;
+    transition: background 0.3s;
+}
+.back-btn:hover { background-color: #fff; }
+
+/* Responsive Grid Layout */
+.main-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    max-width: 900px;
+    width: 90%;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column-reverse; /* Puts turntable under/above photos on small screens */
+        gap: 30px;
+    }
+}
+
+/* --- Slideshow Container --- */
+.slideshow-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.slide {
+    display: none; /* Controlled via JS */
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 85%;
+    object-fit: cover; /* Keeps image proportions neat without stretching */
+    border-radius: 8px;
+}
+
+.caption {
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+/* Subtle Crossfade Transition */
+.fade {
+    animation: fadeEffect 1s ease-in-out;
+}
+@keyframes fadeEffect {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+}
+
+/* --- Turntable Body --- */
+.turntable-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.turntable {
+    position: relative;
+    width: 320px;
+    height: 240px;
+    background-color: #f7e1d7;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.05);
+    border: 3px solid #e2c0b3;
+    overflow: hidden;
+}
+.platter {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-color: #d8c3bc;
+    border-radius: 50%;
+    top: 20px; left: 20px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+}
+.vinyl {
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    background-color: #2b2b2b;
+    border-radius: 50%;
+    top: 25px; left: 25px;
+    box-shadow: 0 0 0 4px #1a1a1a inset, 0 0 0 12px #2b2b2b inset, 0 0 0 16px #1a1a1a inset, 0 4px 10px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(350px) rotate(0deg);
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 2;
+}
+.vinyl-label {
+    width: 60px; height: 60px;
+    background-color: #ffb3c6;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 24px; border: 2px solid #ff4d6d;
+}
+.vinyl.roll-in { transform: translateX(0) rotate(-720deg); }
+.vinyl.spin { animation: spinMusic 3s linear infinite; transform: translateX(0); }
+@keyframes spinMusic {
+    from { transform: translateX(0) rotate(0deg); }
+    to { transform: translateX(0) rotate(360deg); }
+}
+
+.tonearm-base {
+    position: absolute;
+    width: 40px; height: 40px;
+    background-color: #999;
+    border-radius: 50%;
+    top: 30px; right: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 3;
+}
+.tonearm {
+    position: absolute;
+    width: 8px; height: 130px;
+    background: linear-gradient(to right, #ccc, #fff, #ccc);
+    top: 50px; right: 41px;
+    transform-origin: top center;
+    transform: rotate(-25deg);
+    transition: transform 1s ease-in-out;
+    z-index: 4;
+    border-radius: 5px;
+}
+.headshell {
+    position: absolute;
+    width: 16px; height: 25px;
+    background-color: #444;
+    bottom: -15px; left: -4px;
+    border-radius: 3px;
+    transform: rotate(15deg);
+}
+.tonearm.playing { transform: rotate(25deg); }
+
+.knob { position: absolute; width: 15px; height: 15px; background-color: #777; border-radius: 50%; bottom: 20px; }
+.knob-1 { right: 50px; }
+.knob-2 { right: 20px; }
+
+.hint-text {
+    margin-top: 30px;
+    font-weight: bold; color: #6b4c9a;
+    background-color: #fff; padding: 12px 24px;
+    border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    cursor: pointer; transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+.hint-text:hover { transform: scale(1.05); }
+.hint-text.hidden { opacity: 0; pointer-events: none; }
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}

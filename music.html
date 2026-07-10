@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Song & Memories</title>
+    <link rel="stylesheet" href="Assets/css/music.css">
+</head>
+<body>
+    <div class="back-btn-container">
+        <button onclick="location.href='index.html'" class="back-btn">⬅ Back</button>
+    </div>
+
+    <audio id="bg-music" src="Assets/your-song.mp3"></audio>
+
+    <div class="main-layout">
+        
+        <div class="slideshow-container">
+            <div class="slide fade">
+                <img src="Assets/images/photo1.jpg" alt="Memory 1">
+                <div class="caption">The day we met ❤️</div>
+            </div>
+            <div class="slide fade">
+                <img src="Assets/images/photo2.jpg" alt="Memory 2">
+                <div class="caption">Our favorite date ✨</div>
+            </div>
+            <div class="slide fade">
+                <img src="Assets/images/photo3.jpg" alt="Memory 3">
+                <div class="caption">Every day with you is paradise 🌸</div>
+            </div>
+        </div>
+
+        <div class="turntable-container">
+            <div class="turntable">
+                <div class="platter"></div>
+                
+                <div id="vinyl" class="vinyl">
+                    <div class="vinyl-label">❤️</div>
+                </div>
+
+                <div class="tonearm-base"></div>
+                <div id="tonearm" class="tonearm">
+                    <div class="headshell"></div>
+                </div>
+                
+                <div class="knob knob-1"></div>
+                <div class="knob knob-2"></div>
+            </div>
+
+            <div id="play-hint" class="hint-text" onclick="startMusic()">
+                Click here to play 🎵
+            </div>
+        </div>
+
+    </div>
+
+    <script src="Assets/js/music.js"></script>
+</body>
+</html>

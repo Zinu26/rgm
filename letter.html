@@ -1,51 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Letter ❤️</title>
-
+    <title>A Special Letter For You</title>
     <link rel="stylesheet" href="Assets/css/letter.css">
-
 </head>
-
 <body>
+    <div id="hearts-container"></div>
 
-    <div class="scene">
+    <div class="back-btn-container">
+        <button onclick="location.href='index.html'" class="back-btn">⬅ Back</button>
+    </div>
 
-        <div class="instruction">
-            Click here to open ❤️
-        </div>
-
-        <div class="envelope" id="envelope">
-
+    <div class="envelope-wrapper">
+        <div class="envelope" onclick="openEnvelope(this)">
             <div class="flap"></div>
-
-            <div class="body"></div>
-
-            <div class="letter" id="letter">
-
-                <div class="paper">
-
-                    <h2>My Love ❤️</h2>
-
-                    <p>
-                        (Your letter goes here...)
-                    </p>
-
+            <div class="pocket"></div>
+            <div class="letter">
+                <div class="letter-text">
+                    <h2>My Dearest, ❤️</h2>
+                    <p>Write your beautiful, personal letter right here. Tell her how much she means to you, look back on your favorite memories, or tell her why March 21st is your absolute favorite day.</p>
+                    <p>Every single day with you is a gift, and I'm so lucky to have you in my life.</p>
+                    <p class="signature">Forever Yours, <br> [Your Name]</p>
                 </div>
-
             </div>
-
         </div>
-
+        <div class="hint-text">Click here to open 💌</div>
     </div>
 
     <script src="Assets/js/letter.js"></script>
-
 </body>
-
 </html>
