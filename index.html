@@ -309,6 +309,46 @@
             </div>
         </div>
     </div>
+
+    <div id="pinlock" class="pinlock hidden">
+        <div class="pin-card">
+            <h2>🔒 Enter Passcode</h2>
+            <p class="hint">Special day for us ❤️</p>
+
+            <input type="password" id="pinInput" maxlength="4" placeholder="••••" autocomplete="off">
+
+            <button onclick="checkPin()">Unlock</button>
+
+            <p id="pinMessage"></p>
+        </div>
+    </div>
+
+    <div id="mainMenu" class="menu hidden">
+
+        <h1>Welcome, Love ❤️</h1>
+        <p>Choose one</p>
+
+        <div class="menu-buttons">
+
+            <button onclick="location.href='letter.html'">
+                💌
+                <span>Letter</span>
+            </button>
+
+            <button onclick="location.href='music.html'">
+                🎵
+                <span>Music</span>
+            </button>
+
+            <button onclick="location.href='flower.html'">
+                🌸
+                <span>Flower</span>
+            </button>
+
+        </div>
+
+    </div>
+    
     <script src="Assets/js/loading_screen.js"></script>
 </body>
 
