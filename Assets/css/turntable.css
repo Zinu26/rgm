@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-image: radial-gradient(circle, #f3faff40, #010203);
+    justify-content: center;
+    align-items: center;
+    animation: bgAnim 6s ease alternate infinite;
+    overflow: hidden;
+}
+
+@keyframes bgAnim {
+
+    0%,
+    10% {
+        background-color: #65000b;
+    }
+
+    45%,
+    55% {
+        background-color: #004526;
+    }
+
+    90%,
+    100% {
+        background-color: #011f5b;
+    }
+}
+
+.container {
+    position: relative;
+    display: flex;
+    height: 60vmin;
+    width: 80vmin;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.container * {
+    position: absolute;
+}
+
+.turntable {
+    height: 49.5%;
+    width: 61%;
+    background: #4d4d4d;
+    transform: rotate(-30deg) skewX(30deg);
+    border-radius: 5%;
+    margin-top: 4%;
+    box-shadow: -0.5vmin 0.5vmin 0 0 #3d3d3d,
+        -1vmin 0.9vmin 0 0 #3d3d3d,
+        -1.5vmin 1.35vmin 0 0 #3d3d3d,
+        -2vmin 1.8vmin 0 0 #3d3d3d,
+        -4.75vmin 4vmin 0.25vmin 0 #00000066;
+}
+
+.turntable::before {
+    content: "";
+    position: absolute;
+    top: 4%;
+    left: 78%;
+    height: 24%;
+    width: 17%;
+    background: #3d3d3d;
+    border-radius: 50%;
+    box-shadow: -0.1vmin 0.1vmin 0.25vmin 0 #000000 inset;
+}
+
+.legs {
+    height: 100%;
+    width: 100%;
+}
+
+.legs span {
+    top: 64.5%;
+    left: 8.25%;
+    height: 4%;
+    width: 6.5%;
+    background: linear-gradient(90deg, #242423 35%, #333333 35%);
+    border-radius: 0 0 50% 50%;
+}
+
+.legs span+span {
+    top: 87.75%;
+    left: 39.25%;
+}
+
+.wheel {
+    top: 77.75%;
+    left: 39%;
+    height: 4%;
+    width: 6.5%;
+    background: linear-gradient(90deg, #242423 35%, #333333 35%);
+    border-radius: 0 0 50% 50%;
+}
