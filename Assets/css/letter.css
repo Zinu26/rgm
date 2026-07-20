@@ -16,8 +16,10 @@ body {
 /* --- Floating Hearts Background --- */
 #hearts-container {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 0;
 }
@@ -35,8 +37,15 @@ body {
         transform: scale(0) translateY(0) rotate(0deg);
         opacity: 0;
     }
-    10% { opacity: 0.8; }
-    90% { opacity: 0.8; }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
     100% {
         transform: scale(1.4) translateY(-105vh) rotate(360deg);
         opacity: 0;
@@ -54,8 +63,15 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 /* --- Envelope Layout Construction --- */
@@ -66,12 +82,15 @@ body {
     background-color: #f3a3b4;
     cursor: pointer;
     border-radius: 0 0 10px 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .flap {
     position: absolute;
-    top: 0; left: 0; width: 0; height: 0;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
     border-left: 150px solid transparent;
     border-right: 150px solid transparent;
     border-top: 110px solid #e07b93;
@@ -83,7 +102,10 @@ body {
 
 .pocket {
     position: absolute;
-    bottom: 0; left: 0; width: 0; height: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
     border-left: 150px solid #fca3b7;
     border-right: 150px solid #fca3b7;
     border-bottom: 100px solid #fa8da6;
@@ -103,7 +125,7 @@ body {
     padding: 20px;
     box-sizing: border-box;
     z-index: 1;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: transform 0.6s ease, height 0.6s ease, width 0.6s ease, left 0.6s ease;
 }
 
@@ -133,33 +155,40 @@ body {
     background-color: #fff;
     padding: 8px 18px;
     border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: opacity 0.3s ease;
 }
 
 /* --- Envelope Opening & Letter Unfolding Activations --- */
 .envelope.open .flap {
     transform: rotateX(180deg);
-    z-index: 0; /* Drops behind the pulling card */
+    z-index: 0;
+    /* Drops behind the pulling card */
 }
 
 /* --- Envelope Opening & Letter Unfolding Activations --- */
 .envelope.open .letter {
-    transform: translateY(-60px); /* Less upward movement so it doesn't clip */
-    height: 300px; /* Reduced height to fit comfortably on screen */
-    width: 290px;  /* Kept just within the envelope boundaries */
-    left: 5px;     /* perfectly centers the 290px width inside the 300px envelope */
+    transform: translateY(-60px);
+    /* Less upward movement so it doesn't clip */
+    height: 300px;
+    /* Reduced height to fit comfortably on screen */
+    width: 290px;
+    /* Kept just within the envelope boundaries */
+    left: 5px;
+    /* perfectly centers the 290px width inside the 300px envelope */
     z-index: 4;
-    overflow-y: auto; /* Keeps the scroll capability if your letter gets long */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    overflow-y: auto;
+    /* Keeps the scroll capability if your letter gets long */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .envelope.open .letter-text {
     opacity: 1;
-    transition-delay: 0.6s; /* Allows letter to fully slide out before reading */
+    transition-delay: 0.6s;
+    /* Allows letter to fully slide out before reading */
 }
 
-.envelope.open + .hint-text {
+.envelope.open+.hint-text {
     opacity: 0;
     pointer-events: none;
 }
@@ -167,14 +196,22 @@ body {
 /* Back Button styling */
 .back-btn-container {
     position: absolute;
-    top: 20px; left: 20px;
+    top: 20px;
+    left: 20px;
     z-index: 10;
 }
+
 .back-btn {
     background-color: rgba(255, 255, 255, 0.8);
-    border: none; padding: 8px 16px;
-    border-radius: 20px; cursor: pointer;
-    font-weight: bold; color: #ff4d6d;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ff4d6d;
     transition: background 0.3s;
 }
-.back-btn:hover { background-color: #fff; }
+
+.back-btn:hover {
+    background-color: #fff;
+}
