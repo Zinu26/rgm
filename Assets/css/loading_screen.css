@@ -12,13 +12,15 @@
 
 body {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     min-height: 100vh;
+    width: 100%;
     background-color: var(--dark-color);
     overflow: hidden;
     perspective: 1000px;
 }
+
 
 .night {
     position: fixed;
@@ -32,8 +34,11 @@ body {
 }
 
 .flowers {
-    position: relative;
-    transform: scale(0.7);
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) scale(.7);
+    transform-origin: bottom center;
 }
 
 .flower {
@@ -1355,4 +1360,271 @@ body {
     background: rgba(35, 240, 255, .18);
 
     box-shadow: 0 0 25px rgba(35, 240, 255, .4);
+}
+
+/* ===========================
+   Desktop Large Screens
+=========================== */
+@media screen and (min-width:1200px) {
+
+    .flowers {
+        transform:
+            translateX(-50%) scale(.75);
+    }
+
+}
+
+
+
+/* ===========================
+   Tablets
+   601px - 1199px
+=========================== */
+@media screen and (max-width:1199px) {
+
+
+    .flowers {
+
+        transform:
+            translateX(-50%) scale(.55);
+
+    }
+
+
+    .pin-card {
+
+        width: 300px;
+
+    }
+
+
+    .menu h1 {
+
+        font-size: 2.2rem;
+
+    }
+
+
+    .menu-buttons {
+
+        gap: 15px;
+
+    }
+
+
+    .menu-buttons button {
+
+        width: 140px;
+        height: 140px;
+
+        font-size: 2.5rem;
+
+    }
+
+
+}
+
+
+
+/* ===========================
+   Mobile Phones
+   600px below
+=========================== */
+@media screen and (max-width:600px) {
+
+
+    body {
+
+        align-items: center;
+
+    }
+
+
+
+    /* Flower */
+
+    .flowers {
+
+        bottom: -5vh;
+
+        transform:
+            translateX(-50%) scale(.42);
+
+    }
+
+
+
+    /* PIN LOCK */
+
+    .pin-card {
+
+        width: calc(100vw - 40px);
+
+        max-width: 320px;
+
+        padding: 25px 20px;
+
+        border-radius: 18px;
+
+    }
+
+
+
+    .pin-card h2 {
+
+        font-size: 1.25rem;
+
+    }
+
+
+
+    .hint {
+
+        font-size: .85rem;
+
+    }
+
+
+
+    .pin-card input {
+
+        width: 130px;
+
+        height: 50px;
+
+        font-size: 1.6rem;
+
+        letter-spacing: 8px;
+
+    }
+
+
+
+    .pin-card button {
+
+        width: 150px;
+
+        padding: 12px;
+
+    }
+
+
+
+
+    /* MAIN MENU */
+
+
+    .menu {
+
+        padding: 20px;
+
+    }
+
+
+
+    .menu h1 {
+
+        font-size: 1.7rem;
+
+        text-align: center;
+
+    }
+
+
+
+    .menu p {
+
+        margin-bottom: 25px;
+
+    }
+
+
+
+
+    .menu-buttons {
+
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 12px;
+
+    }
+
+
+
+    .menu-buttons button {
+
+        width: 100%;
+
+        height: auto;
+
+        aspect-ratio: 1 / 1;
+
+        border-radius: 18px;
+
+        font-size: 2rem;
+
+    }
+
+
+
+    .menu-buttons button span {
+
+        margin-top: 8px;
+
+        font-size: .8rem;
+
+    }
+
+
+}
+
+
+
+/* ===========================
+   Small Phones
+   iPhone SE / small Android
+=========================== */
+@media screen and (max-width:380px) {
+
+
+    .flowers {
+
+        transform:
+            translateX(-50%) scale(.35);
+
+    }
+
+
+
+    .menu h1 {
+
+        font-size: 1.5rem;
+
+    }
+
+
+
+    .menu-buttons {
+
+        grid-template-columns: 1fr;
+
+        width: 180px;
+
+    }
+
+
+
+    .menu-buttons button {
+
+        height: 100px;
+
+        aspect-ratio: auto;
+
+    }
+
+
 }
