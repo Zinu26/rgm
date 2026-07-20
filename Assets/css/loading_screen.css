@@ -12,10 +12,9 @@
 
 body {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     min-height: 100vh;
-    width: 100%;
     background-color: var(--dark-color);
     overflow: hidden;
     perspective: 1000px;
@@ -1382,15 +1381,6 @@ body {
 =========================== */
 @media screen and (max-width:1199px) {
 
-
-    .flowers {
-
-        transform:
-            translateX(-50%) scale(.55);
-
-    }
-
-
     .pin-card {
 
         width: 300px;
@@ -1431,29 +1421,6 @@ body {
    600px below
 =========================== */
 @media screen and (max-width:600px) {
-
-
-    body {
-
-        align-items: center;
-
-    }
-
-
-
-    /* Flower */
-
-    .flowers {
-
-        bottom: -5vh;
-
-        transform:
-            translateX(-50%) scale(.42);
-
-    }
-
-
-
     /* PIN LOCK */
 
     .pin-card {
@@ -1589,17 +1556,6 @@ body {
    iPhone SE / small Android
 =========================== */
 @media screen and (max-width:380px) {
-
-
-    .flowers {
-
-        transform:
-            translateX(-50%) scale(.35);
-
-    }
-
-
-
     .menu h1 {
 
         font-size: 1.5rem;
